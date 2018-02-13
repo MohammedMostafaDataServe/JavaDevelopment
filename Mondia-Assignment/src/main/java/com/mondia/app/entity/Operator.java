@@ -15,7 +15,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Operator Entity
@@ -30,6 +33,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
     @NamedQuery(name="Operator.findByName",
                 query="SELECT op FROM Operator as op WHERE op.name=?"),
 })
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Operator implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -51,7 +56,8 @@ public class Operator implements Serializable {
 	@Column(name = "OPERATOR_PACKAGE_FLAG")
 	private int operatorPackageFlag;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "operatorId")
-	@JsonManagedReference
+	//@JsonManagedReference
+	//@JsonIgnore
 	private List<Service> servicesList;
 
 	public Operator() {

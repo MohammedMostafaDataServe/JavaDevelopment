@@ -29,7 +29,7 @@ import com.mondia.app.service.IProductService;
  */
 @Controller
 @RequestMapping("user")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProductController {
 
 	@Autowired
@@ -46,7 +46,6 @@ public class ProductController {
 		List<Product> list = productService.getAllProducts();
 		return new ResponseEntity<List<Product>>(list, HttpStatus.OK);
 	}
-
 	@PostMapping("product")
 	public ResponseEntity<Void> addProduct(@RequestBody Product product, UriComponentsBuilder builder) {
 		boolean flag = productService.addProduct(product);

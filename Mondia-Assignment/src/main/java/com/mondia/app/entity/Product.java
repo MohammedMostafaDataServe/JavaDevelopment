@@ -15,7 +15,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Product Entity 
@@ -26,14 +29,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "products")
 @NamedQueries({ @NamedQuery(name = "Product.findAll", query = "SELECT prod FROM Product as prod"),
 		@NamedQuery(name = "Product.findByName", query = "SELECT prod FROM Product as prod WHERE prod.name=?"), })
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Basic(optional = false)
 	@Column(name = "ID")
-	private Integer id;
+	private int id;
 	@Basic(optional = false)
 	@Column(name = "NAME")
 	private String name;
@@ -46,17 +49,19 @@ public class Product implements Serializable {
 	@Column(name = "MAX_PRICE")
 	private float maxPrice;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
-	@JsonManagedReference
+	//@JsonManagedReference(value="service")
+	//@JsonIgnore
 	private List<Service> servicesList;
+
 
 	public Product() {
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -91,7 +96,6 @@ public class Product implements Serializable {
 	public void setMaxPrice(float maxPrice) {
 		this.maxPrice = maxPrice;
 	}
-
 	public List<Service> getServicesList() {
 		return servicesList;
 	}
@@ -100,28 +104,30 @@ public class Product implements Serializable {
 		this.servicesList = servicesList;
 	}
 
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
+	  @Override
+	    public int hashCode() {
+	        int hash = 0;
+	        hash += id;
+	        return hash;
+	    }
 
-	@Override
-	public boolean equals(Object object) {
-		if (!(object instanceof Product)) {
-			return false;
-		}
-		Product other = (Product) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
+	    @Override
+	    public boolean equals(Object object) {
+	        // TODO: Warning - this method won't work in the case the id fields are not set
+	        if (!(object instanceof Product)) {
+	            return false;
+	        }
+	        Product other = (Product) object;
+	        if ((this.id != other.id)) {
+	            return false;
+	        }
+	        return true;
+	    }
 
-	/*@Override
-	public String toString() {
-		return "com.entity.Products[ id=" + id + " ]";
-	}*/
+	    @Override
+	    public String toString() {
+	        return "com.entity.Products[ id=" + id + " ]";
+	    }
+	
 
 }

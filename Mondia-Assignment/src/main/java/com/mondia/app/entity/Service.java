@@ -15,6 +15,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * Service Entity
@@ -26,6 +29,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @NamedQueries({ @NamedQuery(name = "Service.findAll", query = "SELECT serv FROM Service as serv"),
 		@NamedQuery(name = "Service.findByOperatorId", query = "SELECT serv FROM Service as serv WHERE serv.operatorId.id=?"),
 		@NamedQuery(name = "Service.findByProductId", query = "SELECT serv FROM Service as serv WHERE serv.productId.id=?"), })
+
+@JsonIdentityInfo(generator=ObjectIdGenerators.UUIDGenerator.class, property="@id")
 public class Service implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -46,11 +51,13 @@ public class Service implements Serializable {
 	private Integer operatorPackageId;
 	@JoinColumn(name = "OPERATOR_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
-	@JsonBackReference
+	//@JsonBackReference
+	//@JsonIgnore
 	private Operator operatorId;
 	@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
-	@JsonBackReference
+	//@JsonBackReference(value="service")
+	//@JsonIgnore
 	private Product productId;
 
 	public static enum Type {

@@ -27,7 +27,7 @@ export class ProductService {
   }
   deleteProduct(id: Number) {
 
-    return this._http.delete(this.baseUrl + '/product/' + id, this.options).map((response: Response) => response.json())
+    return this._http.delete(this.baseUrl + '/product/' + id, this.options)/*.map((response: Response) => response.json())*/
       .catch(this.errorHandler);
   }
 
