@@ -1,0 +1,2 @@
+test git push from command line
+thanks..
